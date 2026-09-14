@@ -2,7 +2,7 @@
 // read at runtime and reports pass/fail with counts.
 import { loadChains } from "../src/orchestrator.ts";
 import { loadManualIndex, listManuals, findManual, readPlaybook, listPlaybooks } from "../src/manuals.ts";
-import { listFrameworks } from "../src/frameworks.ts";
+import { listFrameworks, frameworkProfile } from "../src/frameworks.ts";
 import { loadTools, loadSkills, listTools, listSkills, readSkill } from "../src/catalog.ts";
 import {
   listPayloadCategories, payloadLookup, listAttackVectors, techniqueLookup,
@@ -36,6 +36,8 @@ check("listPlaybooks", lp && (lp.total_playbooks ?? lp.playbooks?.length ?? 0) >
 // 3) frameworks
 const fw = listFrameworks();
 check("frameworks.json", fw.length > 0, `${fw.length} frameworks`);
+const wpProfile = frameworkProfile("wordpress");
+check("wordpress P1-P6 vuln patterns", (wpProfile?.patterns?.length ?? 0) === 6, `${wpProfile?.patterns?.length ?? 0} patterns`);
 
 // 4) tools-catalog + skills
 const tools = loadTools();
